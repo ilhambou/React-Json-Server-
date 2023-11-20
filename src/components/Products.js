@@ -1,20 +1,45 @@
 import { faCheckCircle, faCircle, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 
 function Products() {
-  const[products,setProducts]=useState([
-    {id : 1, name: "computer", price:234, checked:false},
-    {id : 2, name: "printer", price:34, checked:true},
-    {id : 3, name: "smartphone", price:97, checked:false}
+  const[products,setProducts]=useState([]);
 
-  ]);
+  useEffect(()=>{
+    handleGetProducts();
+  },[]);
+
+  const handleGetProducts = ()=>{
+    axios.get("http://localhost:9000/products")
+    .then(resp=>{
+      const products = resp.data;
+      setProducts(products);
+
+    })
+    .catch(err=>{
+      console.log(err);
+    })
+  }
 
   const handleDeleteProduct=(product)=>{
     const newProducts=products.filter(p=>p.id!=product.id);
     setProducts(newProducts);
 
-  }
+  };
+
+  const handleCheckProduct = (product)=>
+  {
+    const newProducts = products.map(p=>{
+      if(p.id == product.id)
+      {
+        p.checked =! p.checked
+      }
+      return p;
+    });
+    setProducts(newProducts);
+  };
+
   return (
     <div className='p-1 m-1'>
       <div className='row'>
@@ -36,7 +61,7 @@ function Products() {
                       <td>{product.name}</td>
                       <td>{product.price}</td>
                       <td>
-                        <button className='btn btn-outline-success'>
+                        <button onClick={()=>handleCheckProduct(product)} className='btn btn-outline-success'>
                           <FontAwesomeIcon 
                           icon={product.checked?faCheckCircle:faCircle}>
 

@@ -2,6 +2,7 @@ import { faCheckCircle, faCircle, faTrash } from '@fortawesome/free-solid-svg-ic
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import { getProducts } from '../app/app';
 
 function Products() {
   const[products,setProducts]=useState([]);
@@ -11,7 +12,7 @@ function Products() {
   },[]);
 
   const handleGetProducts = ()=>{
-    axios.get("http://localhost:9000/products")
+/*axios.get("http://localhost:9000/products")
     .then(resp=>{
       const products = resp.data;
       setProducts(products);
@@ -19,8 +20,15 @@ function Products() {
     })
     .catch(err=>{
       console.log(err);
+    })*/
+
+
+    getProducts().then(resp=> {
+      setProducts(resp.data);
+    }).catch(err => {
+      console.log(err);
     })
-  }
+  };
 
   const handleDeleteProduct=(product)=>{
     const newProducts=products.filter(p=>p.id!=product.id);

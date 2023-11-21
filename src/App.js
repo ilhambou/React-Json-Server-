@@ -27,6 +27,10 @@ function App() {
           <Link onClick={()=> setCurrentRoute("products")}
            className={currentRoute=='products'?"btn btn-info ms-1":"btn btn-outline-info  ms-1"} to={"/products"}>Products</Link>
         </li>
+        <li>
+          <Link onClick={()=> setCurrentRoute("newProduct")}
+           className={currentRoute=='newProduct'?"btn btn-info ms-1":"btn btn-outline-info  ms-1"} to={"/newProduct"}>New Product</Link>
+        </li>
       </ul>
     </nav>
     <Routes>

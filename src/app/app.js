@@ -10,7 +10,7 @@ export const getProducts = ()=>
         return productsApi.get("/products");
     };
 
-export const deleteProducts = (product)=>
+export const deleteProduct = (product)=>
     {
         return productsApi.delete(`/products/${product.id}`);
 
@@ -30,11 +30,11 @@ export const saveProduct = (product)=>
 
 export const checkProduct = (product)=>
     {
-        return productsApi.patch(`/products`,{checked:!product.checked});
+        return productsApi.patch(`/products/${product.id}`,{checked:!product.checked});
         
     };
 export const updateProduct = (product)=>
     {
-        return productsApi.put(`/products`,product);
+        return productsApi.put(`/products/${product.id}`,product);
         
     }

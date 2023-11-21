@@ -2,7 +2,7 @@ import { faCheckCircle, faCircle, faTrash } from '@fortawesome/free-solid-svg-ic
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
-import { getProducts } from '../app/app';
+import { checkProduct, deleteProduct, getProducts } from '../app/app';
 
 function Products() {
   const[products,setProducts]=useState([]);
@@ -31,14 +31,16 @@ function Products() {
   };
 
   const handleDeleteProduct=(product)=>{
-    const newProducts=products.filter(p=>p.id!=product.id);
-    setProducts(newProducts);
-
+    deleteProduct(product).then(resp => {
+      //handleGetProducts(); recharger tous les donnes
+      const newProducts=products.filter(p=>p.id!=product.id);
+      setProducts(newProducts);
+    });
   };
 
-  const handleCheckProduct = (product)=>
-  {
-    const newProducts = products.map(p=>{
+  const handleCheckProduct = (product)=>{
+    checkProduct(product).then((resp)=>{
+      const newProducts = products.map(p=>{
       if(p.id == product.id)
       {
         p.checked =! p.checked
@@ -46,6 +48,7 @@ function Products() {
       return p;
     });
     setProducts(newProducts);
+    });
   };
 
   return (

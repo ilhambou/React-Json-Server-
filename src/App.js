@@ -3,6 +3,8 @@ import './App.css';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import Products from './components/Products';
 import NewProduct from './components/NewProduct';
+import EditProduct from './components/EditProduct';
+
 import Home from './components/Home';
 import "bootstrap/dist/css/bootstrap.min.css"
 import { useEffect, useState } from 'react';
@@ -37,6 +39,8 @@ function App() {
       <Route path="/home" element={<Home/>}> </Route>
       <Route path="/products" element={<Products/>}> </Route>
       <Route path="/newProduct" element={<NewProduct/>}> </Route>
+      <Route path="/editProduct/:id" element={<EditProduct/>}> </Route>
+
     </Routes>
     </BrowserRouter>
   );

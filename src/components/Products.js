@@ -1,13 +1,15 @@
-import { faCheckCircle, faCircle, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faCheckCircle, faCircle, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { checkProduct, deleteProduct, getProducts } from '../app/app';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 
 
 function Products() {
   const [query, setQuery] = useState("");
+  const navigate=useNavigate();
   const[state,setState]=useState( // object dans state 
     {
       products:[],
@@ -110,7 +112,11 @@ function Products() {
                           </FontAwesomeIcon>
                         </button>
                       </td>
-                      <td>
+                      <button onClick={()=>navigate(`/editProduct/${product.id}`)} className='btn btn-outline-success'>
+                        <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
+
+                      </button>
+                      <td> 
                         <button onClick={()=>handleDeleteProduct(product)} className='btn btn-outline-danger'>
                           <FontAwesomeIcon
                           icon={faTrash}

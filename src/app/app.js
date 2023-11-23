@@ -16,7 +16,7 @@ export const deleteProduct = (product)=>
 
     };
 
-export const getProduct = (id)=>
+export const getProductById = (id)=>
     {
         return productsApi.get(`/products/${id}`);
         

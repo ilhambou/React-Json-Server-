@@ -5,26 +5,27 @@ import React, { useEffect, useState } from 'react'
 import { checkProduct, deleteProduct, getProducts } from '../app/app';
 
 function Products() {
-  const[products,setProducts]=useState([]);
+  const[state,setState]=useState( // object dans state 
+    {
+      products:[],
+      currentPage:1,
+      pageSize:4,
+      keyword:"",
+      totalPages:0
+    }
+  )
 
   useEffect(()=>{
-    handleGetProducts();
+    handleGetProducts(state.keyword, state.currentPage, state.pageSize);
   },[]);
 
-  const handleGetProducts = ()=>{
-/*axios.get("http://localhost:9000/products")
-    .then(resp=>{
-      const products = resp.data;
-      setProducts(products);
 
-    })
-    .catch(err=>{
-      console.log(err);
-    })*/
-
-
-    getProducts().then(resp=> {
-      setProducts(resp.data);
+  const handleGetProducts = (keyword, page, size)=>{
+    getProducts(keyword, page, size).then(resp=> {
+      const totalElements = resp.headers['x-total-count'];
+      let totalPages = Math.floor(totalElements/size);
+      if(totalElements % size != 0) ++totalPages;
+      setState({...state,products:resp.data, keyword:keyword, currentPage:page, pageSize:size, totalPages:totalPages})// copie de tous les state ...
     }).catch(err => {
       console.log(err);
     })
@@ -33,23 +34,27 @@ function Products() {
   const handleDeleteProduct=(product)=>{
     deleteProduct(product).then(resp => {
       //handleGetProducts(); recharger tous les donnes
-      const newProducts=products.filter(p=>p.id!=product.id);
-      setProducts(newProducts);
+      const newProducts=state.products.filter(p=>p.id!=product.id);
+      setState({...state, products:newProducts});
     });
   };
 
   const handleCheckProduct = (product)=>{
     checkProduct(product).then((resp)=>{
-      const newProducts = products.map(p=>{
+      const newProducts = state.products.map(p=>{
       if(p.id == product.id)
       {
         p.checked =! p.checked
       }
       return p;
     });
-    setProducts(newProducts);
+    setState({...state, products:newProducts}); // je vais changer la valeur de product products:newProducts
     });
   };
+
+  const handleGotoPage=(page)=>{
+    handleGetProducts(state.keyword, page, state.pageSize);
+  }
 
   return (
     <div className='p-1 m-1'>
@@ -66,7 +71,7 @@ function Products() {
               </thead>
               <tbody>
                 {
-                  products.map(product=>(
+                  state.products.map(product=>(
                     <tr key={product.id}> {/*on doit le donner une valeur unique si on a une boucle*/}
                       <td>{product.id}</td>
                       <td>{product.name}</td>
@@ -92,6 +97,18 @@ function Products() {
                   ))
                 }
               </tbody>
+              <ul className='nav nav-pills'>
+                {
+                  (new Array(state.totalPages).fill(0)).map((v,index)=>( // emerna tbleau b les 0 ms ce qu il nous intesse howa index 
+                    <li>
+                      <button onClick={()=>handleGotoPage(index+1)} className='btn btn-outline-info ms-1'>
+                        {index + 1}
+                      </button>
+                    </li>
+                  ))
+                }
+
+              </ul>
 
 
             </table>

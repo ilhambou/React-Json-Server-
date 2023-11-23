@@ -13,10 +13,22 @@
       "checked": false
     },
     {
-      "name": "test",
-      "price": "10",
-      "checked": "on",
+      "name": "ssss",
+      "price": "012",
+      "checked": false,
       "id": 3
+    },
+    {
+      "name": "dedef",
+      "price": 0,
+      "checked": false,
+      "id": 4
+    },
+    {
+      "name": "fefeef",
+      "price": 0,
+      "checked": false,
+      "id": 5
     }
   ]
 }
